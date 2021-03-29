@@ -1,0 +1,14 @@
+@url = http://localhost:5000/attendances-module
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NWMxNTBjYy1kMjViLTRmYzctOGRiNi03NDcyYWEzOGJkMmYiLCJ1bmlxdWVfbmFtZSI6IjU1YzE1MGNjLWQyNWItNGZjNy04ZGI2LTc0NzJhYTM4YmQyZiIsImp0aSI6IjhkN2YxMThkLTg2OWMtNGVlYi1iMDgzLTQxMzZkYzhmMmVhNCIsImlhdCI6IjE2MTYzMzEyMTY1NTciLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ1c2VyIiwibmJmIjoxNjE2MzMxMjE2LCJleHAiOjE2MTYzMzQ4MTYsImlzcyI6ImNvbmZhYiJ9.DyznhoQYmsbekNxZduEC_WKCvkIGYPk1zxd55ulycts
+@eventId = bddebff7-7aab-4d6b-bb1e-be6a591bdbe3
+
+###
+GET {{url}}
+
+### Attend an event
+POST {{url}}/attendances/events/{{eventId}}/attend
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+}

@@ -1,0 +1,8 @@
+{
+  "speakers": {
+    "module": {
+      "name": "Speakers",
+      "enabled": true
+    }
+  }
+}

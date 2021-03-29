@@ -1,0 +1,16 @@
+@url = http://localhost:5000/agendas-module
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlNmMyZGEwMC0xMTM4LTRmMTMtOGZjNi0xOTgxODczZmY4YWMiLCJ1bmlxdWVfbmFtZSI6ImU2YzJkYTAwLTExMzgtNGYxMy04ZmM2LTE5ODE4NzNmZjhhYyIsImp0aSI6IjdiZjY5ZGNlLWJhY2UtNDE4OC04MjA3LTc5Mjc2ZjViODliMiIsImlhdCI6IjE2MTYzMjIwNzg4NzIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbImNvbmZlcmVuY2VzIiwiaG9zdHMiLCJ0aWNrZXRzIiwiY2ZwIiwic3BlYWtlcnMiLCJzdWJtaXNzaW9ucyIsImFnZW5kYXMiXSwibmJmIjoxNjE2MzIyMDc4LCJleHAiOjE2MTYzMjU2NzgsImlzcyI6ImNvbmZhYiJ9.jTekCHQxHY-rObTyKAn1NdiCp5GOGIkqSE6iOiitqkc
+
+###
+GET {{url}}
+
+### Assign regular agenda slot
+PUT {{url}}/agendas/ec46ee3c-212a-44ad-a96b-ab7425728fb2/slots/regular
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "agendaTrackId": "34953198-3859-4585-9709-9db5511a9833",
+  "agendaSlotId": "d27c3975-e099-4990-8e0b-f85e846e1489",
+  "agendaItemId": "bddebff7-7aab-4d6b-bb1e-be6a591bdbe3"
+}

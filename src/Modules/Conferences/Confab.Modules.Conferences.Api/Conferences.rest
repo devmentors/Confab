@@ -1,0 +1,77 @@
+@url = http://localhost:5000/conferences-module
+@hostId = c80079cc-b3a6-4e3e-9577-cb08ae894a5a
+@conferenceId = f37742be-b5d0-4724-840d-8ead403e0539
+@accessToken = secret
+
+###
+GET {{url}}
+
+###
+POST {{url}}/hosts
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Host #1",
+  "description": "Lorem ipsum"
+}
+
+###
+GET {{url}}/hosts
+
+###
+GET {{url}}/hosts/{{hostId}}
+
+###
+PUT {{url}}/hosts/{{hostId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Host #1"
+}
+
+###
+DELETE {{url}}/hosts/{{hostId}}
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{url}}/conferences
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "hostId": "{{hostId}}",
+  "name": "Conference #1",
+  "description": "Lorem ipsum",
+  "location": "Test 123",
+  "from": "2021-05-01",
+  "to": "2021-05-02",
+  "participantsLimit": 100,
+  "logoUrl": null
+}
+
+###
+GET {{url}}/conferences
+
+###
+GET {{url}}/conferences/{{conferenceId}}
+
+###
+PUT {{url}}/conferences/{{conferenceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Conference #2",
+  "description": "Lorem ipsum",
+  "location": "Test 123",
+  "from": "2021-05-01",
+  "to": "2021-05-02",
+  "participantsLimit": 100,
+  "logoUrl": null
+}
+
+###
+DELETE {{url}}/conferences/{{conferenceId}}
+Authorization: Bearer {{accessToken}}

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Confab.Modules.Conferences.Core\Confab.Modules.Conferences.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="module.conferences.json" />
+      <Content Include="module.conferences.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="module.conferences.development.json" />
+      <Content Include="module.conferences.development.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>

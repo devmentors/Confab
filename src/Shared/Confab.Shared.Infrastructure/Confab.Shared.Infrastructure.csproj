@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Confab.Shared.Abstractions\Confab.Shared.Abstractions.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Humanizer" Version="2.8.26" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.4" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
+      <PackageReference Include="Scrutor" Version="3.3.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.1.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.1.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.1.0" />
+    </ItemGroup>
+
+</Project>

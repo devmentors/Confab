@@ -1,0 +1,266 @@
+@url = http://localhost:5000
+@agendasApi = {{url}}/agendas-module
+@attendancesApi = {{url}}/attendances-module
+@conferencesApi = {{url}}/conferences-module
+@notificationsApi = {{url}}/notifications-module
+@speakersApi = {{url}}/speakers-module
+@surveysApi = {{url}}/surveys-module
+@ticketsApi = {{url}}/tickets-module
+@usersApi = {{url}}/users-module
+
+###
+GET {{url}}
+
+###
+GET {{agendasApi}}
+
+###
+GET {{attendancesApi}}
+
+###
+GET {{conferencesApi}}
+
+###
+GET {{speakersApi}}
+
+###
+GET {{ticketsApi}}
+
+###
+GET {{usersApi}}
+
+
+// Sample scenario
+
+@adminEmail = admin@confab.io
+@adminPassword = secret
+
+### Create the admin account with appropriate permissions
+POST {{usersApi}}/account/sign-up
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}",
+  "role": "admin",
+  "claims": {
+    "permissions": ["conferences", "hosts", "tickets", "cfp", "speakers", "submissions", "agendas"]
+  }
+}
+
+### Login as the administrator
+# @name sign_in_admin
+POST {{usersApi}}/account/sign-in
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+###
+@accessTokenAdmin = {{sign_in_admin.response.body.$.accessToken}}
+
+### Create the host who can manage the conferences
+# @name create_host
+POST {{conferencesApi}}/hosts
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Host #1",
+  "description": "Lorem ipsum"
+}
+
+###
+@hostId = {{create_host.response.headers.Resource-ID}}
+
+### Create the conference (`as well as `participantsLimit` (no limit))
+# @name create_conference
+POST {{conferencesApi}}/conferences
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+  "hostId": "{{hostId}}",
+  "name": "Conference #1",
+  "description": "Lorem ipsum conference description",
+  "location": "Test street 12/34",
+  "from": "2021-05-01",
+  "to": "2021-05-02",
+  "participantsLimit": null,
+  "logoUrl": "https://devmentors.io/assets/content/logo-large.png"
+}
+
+###
+@createdConferenceId = {{create_conference.response.headers.Resource-ID}}
+
+### Start the tickets sale (`price` is nullable (free), as well as `amount` (no limit))
+POST {{ticketsApi}}/sales/conferences/{{createdConferenceId}}
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+  "conferenceId": "{{createdConferenceId}}",
+  "name": "Early bird",
+  "price": 1000,
+  "amount": 100,
+  "from": "2021-03-01",
+  "to": "2021-05-01"
+}
+
+###
+@user1Email = user1@confab.io
+@user1Password = secret
+
+### Register as the regular user
+POST {{usersApi}}/account/sign-up
+Content-Type: application/json
+
+{
+  "email": "{{user1Email}}",
+  "password": "{{user1Password}}",
+  "role": "user"
+}
+
+### Login as the regular user
+# @name sign_in_user1
+POST {{usersApi}}/account/sign-in
+Content-Type: application/json
+
+{
+  "email": "{{user1Email}}",
+  "password": "{{user1Password}}"
+}
+
+###
+@accessTokenUser1 = {{sign_in_user1.response.body.$.accessToken}}
+@userId = {{sign_in_user1.response.body.$.id}}
+
+### Browse the available conferences
+# @name browse_conferences
+GET {{conferencesApi}}/conferences
+
+### Get the created conference details
+GET {{conferencesApi}}/conferences/{{createdConferenceId}}
+
+### Check the tickets for the conference
+GET {{ticketsApi}}/sales/conferences/{{createdConferenceId}}
+
+### Check the currently available tickets for the conference
+GET {{ticketsApi}}/sales/conferences/{{createdConferenceId}}/current
+
+### Purchase the ticket for the conference
+POST {{ticketsApi}}/tickets/conferences/{{createdConferenceId}}/purchase
+Authorization: Bearer {{accessTokenUser1}}
+
+### Check your tickets
+GET {{ticketsApi}}/tickets
+Authorization: Bearer {{accessTokenUser1}}
+
+### Create CFP
+POST {{agendasApi}}/conferences/{{createdConferenceId}}/cfp
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+  "from": "2021-04-01",
+  "to": "2021-05-01"
+}
+
+### Open CFP
+PUT {{agendasApi}}/conferences/{{createdConferenceId}}/cfp/open
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+}
+
+### Add a speaker
+POST {{speakersApi}}/speakers
+Authorization: Bearer {{accessTokenUser1}}
+Content-Type: application/json
+
+{
+  "email": "{{user1Email}}",
+  "fullName": "John Doe",
+  "bio": "Lorem ipsum",
+  "avatarUrl": "https://www.w3schools.com/howto/img_avatar.png"
+}
+
+### Create submission
+# @name create_submission
+POST {{agendasApi}}/submissions
+Authorization: Bearer {{accessTokenUser1}}
+Content-Type: application/json
+
+{
+  "conferenceId": "{{createdConferenceId}}",
+  "title": "My submission",
+  "description": "Lorem ipsum",
+  "level": 3,
+  "tags": ["stationary", "dotnet"],
+  "speakerIds": ["{{userId}}"]
+}
+
+###
+@submissionId = {{create_submission.response.headers.Resource-ID}}
+
+### Approve submission
+PUT {{agendasApi}}/submissions/{{submissionId}}/approve
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+}
+
+### Create agenda track
+# @name create_agenda_track
+POST {{agendasApi}}/agendas/{{createdConferenceId}}/tracks
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": ".NET track"
+}
+
+###
+@agendaTrackId = {{create_agenda_track.response.headers.Resource-ID}}
+
+### Create regular agenda slot
+# @name create_regular_agenda_slot
+POST {{agendasApi}}/agendas/{{createdConferenceId}}/slots
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+  "agendaTrackId": "{{agendaTrackId}}",
+  "from": "2021-05-01T09:00:00",
+  "to": "2021-05-01T10:00:00",
+  "participantsLimit": 100,
+  "type": "regular"
+}
+
+###
+@agendaSlotId = {{create_regular_agenda_slot.response.headers.Resource-ID}}
+
+### Assign regular agenda slot
+PUT {{agendasApi}}/agendas/{{createdConferenceId}}/slots/regular
+Authorization: Bearer {{accessTokenAdmin}}
+Content-Type: application/json
+
+{
+  "agendaTrackId": "{{agendaTrackId}}",
+  "agendaSlotId": "{{agendaSlotId}}",
+  "agendaItemId": "{{submissionId}}"
+}
+
+@eventId = 8ce62487-4ce9-4577-8c47-392a7d95da9e
+
+### Attend an event
+POST {{attendancesApi}}/attendances/events/{{eventId}}/attend
+Authorization: Bearer {{accessTokenUser1}}
+Content-Type: application/json
+
+{
+}
