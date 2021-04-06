@@ -20,6 +20,8 @@ using Confab.Shared.Infrastructure.Queries;
 using Confab.Shared.Infrastructure.Services;
 using Confab.Shared.Infrastructure.Storage;
 using Confab.Shared.Infrastructure.Time;
+using Convey;
+using Convey.MessageBrokers.RabbitMQ;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -28,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 [assembly: InternalsVisibleTo("Confab.Bootstrapper")]
+[assembly: InternalsVisibleTo("Confab.Services.Tickets.Core")]
 [assembly: InternalsVisibleTo("Confab.Shared.Tests")]
 namespace Confab.Shared.Infrastructure
 {
@@ -111,6 +114,11 @@ namespace Confab.Shared.Infrastructure
                     
                     manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
                 });
+            
+            services
+                .AddConvey()
+                .AddRabbitMq()
+                .Build();
             
             return services;
         }

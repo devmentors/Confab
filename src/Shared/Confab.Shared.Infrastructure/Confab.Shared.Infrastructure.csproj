@@ -9,6 +9,8 @@
     </ItemGroup>
     
     <ItemGroup>
+      <PackageReference Include="Convey.MessageBrokers.CQRS" Version="0.5.*" />
+      <PackageReference Include="Convey.MessageBrokers.RabbitMQ" Version="0.5.*" />
       <PackageReference Include="Humanizer" Version="2.8.26" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
       <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.4" />

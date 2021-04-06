@@ -11,7 +11,7 @@ namespace Confab.Shared.Infrastructure.Messaging
         
         internal static IServiceCollection AddMessaging(this IServiceCollection services)
         {
-            services.AddSingleton<IMessageBroker, InMemoryMessageBroker>();
+            services.AddSingleton<IMessageBroker, MessageBroker>();
             services.AddSingleton<IMessageChannel, MessageChannel>();
             services.AddSingleton<IAsyncMessageDispatcher, AsyncMessageDispatcher>();
 
